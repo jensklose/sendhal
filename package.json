@@ -1,0 +1,31 @@
+{
+  "name": "sendhal",
+  "version": "1.0.0",
+  "description": "Express middleware and error handler to send hal responses with json/xml/html negotiation",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "keywords": [
+    "hal",
+    "express",
+    "api",
+    "json",
+    "rest",
+    "restful"
+  ],
+  "author": "Jens Klose",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^1.20.1",
+    "should": "^4.0.1"
+  },
+  "dependencies": {
+    "coffee-script": "^1.7.1",
+    "hal": "^0.1.0"
+  }
+}
