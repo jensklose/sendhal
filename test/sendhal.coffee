@@ -18,7 +18,7 @@ describe 'sendhal functions', ->
         strContent
     return
 
-  it 'ok should set status and create hal renderer', (done) ->
+  it '"ok" should set status and create hal renderer', (done) ->
     deepCoverage = false
     res.status = (code) -> code.should.eql 200
     res.format = (obj) ->
@@ -32,7 +32,16 @@ describe 'sendhal functions', ->
     deepCoverage.should.be.true
     done()
 
-  it 'created should set status code and response without body', (done) ->
+  it '"created" should set status code and response without body', (done) ->
+    res.status = (code) -> code.should.eql 201
+    req.path = '/api/'
+    res.send = (body) -> body.should.be.empty
+    res.location = (uri) -> uri.should.eql '/api/1f00'
+
+    sendhal.created '1f00', req, res
+    done()
+
+  it '"notFound" should set status code and response without body', (done) ->
     res.status = (code) -> code.should.eql 201
     req.path = '/api/'
     res.send = (body) -> body.should.be.empty
@@ -43,8 +52,10 @@ describe 'sendhal functions', ->
 
   it 'should handle fail call with unknown error parameter', (done) ->
     deepCoverage = false
-    res.statusCode = 500
-    res.status = (code) -> code.should.eql 500
+    res.statusCode = 200
+    res.status = (code) ->
+      code.should.eql 500
+      res.statusCode = code
     res.format = (obj) ->
       deepCoverage = true
       obj.should.have.keys 'html', 'xml', 'json'

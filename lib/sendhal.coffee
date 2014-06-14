@@ -20,6 +20,10 @@ sendhal =
     res.location (req.path.replace /\/+$/, '') + '/' + id
     res.status 201
     res.send ''
+    
+  notFound: (req, res) ->
+    res.status 404
+    sendhal.fail new Error('Not found'), req, res
 
   fail: (err, req, res, next) ->
     next = ->
@@ -42,10 +46,11 @@ sendhal =
         res.status errorStatus
         appError.message = err.message
         if process.env.NODE_ENV is 'development' or 'test'
-          appError.stack = err.stack
+          appError.stack = []
+          appError.stack.push line for line in err.stack?.split /\n/, 4
 
       else
-        res.status res.statusCode or 500
+        res.status 500 if res.statusCode < 400
         appError.message = 'unknown error type: ' + errType
         appError.stack = err
 
