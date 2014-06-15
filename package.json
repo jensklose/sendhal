@@ -1,6 +1,6 @@
 {
   "name": "sendhal",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Express middleware and error handler to send hal responses with json/xml/html negotiation",
   "main": "index.js",
   "scripts": {
