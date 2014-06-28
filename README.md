@@ -78,3 +78,53 @@ router.route('/transactions')
         }
     })
 ```
+
+## API
+```javascript
+ok(doc, req, res)
+```
+send statusCode res.statusCode or 200
+the URI of _self is set by req.originalUrl
+
+- doc: Resource content
+- req: express request
+- res: express response
+
+
+
+```javascript
+created(id, req, res)
+```
+send statusCode 201
+set header 'location:' to req.path + id
+
+- id: the new resource id
+- req: express request
+- res: express response
+
+
+```javascript
+notFound(req, res)
+```
+send not found response with code 404
+
+- req: express request
+- res: express response
+
+```javascript
+fail(err, req, res, next)
+```
+implementation of express error handler interface
+The err parameter is used to switch the output
+
+- [object Array]: statusCode 400; used for validation errors
+- [object Error]: statusCode 500; used for server errors
+- any other: statusCode 500
+
+You can set the status code with err.status or res.statusCode
+
+
+```javascript
+Resource
+```
+the hal resource object
