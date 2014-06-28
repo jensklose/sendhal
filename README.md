@@ -84,9 +84,10 @@ router.route('/transactions')
 ok(doc, req, res)
 ```
 send statusCode res.statusCode or 200
+
 the URI of _self is set by req.originalUrl
 
-- doc: Resource content
+- doc: resource content
 - req: express request
 - res: express response
 
@@ -96,6 +97,7 @@ the URI of _self is set by req.originalUrl
 created(id, req, res)
 ```
 send statusCode 201
+
 set header 'location:' to req.path + id
 
 - id: the new resource id
@@ -115,6 +117,7 @@ send not found response with code 404
 fail(err, req, res, next)
 ```
 implementation of express error handler interface
+
 The err parameter is used to switch the output
 
 - [object Array]: statusCode 400; used for validation errors
