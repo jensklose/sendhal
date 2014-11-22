@@ -13,57 +13,34 @@ npm install sendhal --save
 This example shows the basic usage in an express 4 context.
 
 ```javascript
-var express = require('express');
-var sendhal = require('sendhal');
-
-//...
-
-var routes = require('./routes/index');
-var app = express();
-
-//...
-
-app.use('/', routes);
+    var express = require('express');
+    var config = require('config');
+    var sendhal = require('sendhal');
+    var app = express();
     
-/// catch 404 and forwarding to error handler
-app.use(function(req, res, next) {
-    var method = req.method.toLowerCase();
-    if (method === 'get') {
-        var err = new Error('Not Found');
-        res.status(404);
-        sendhal.fail(err, req, res, next);
-    }
-    res.status(405);
-    sendhal.fail(new Error('Method Not Allowed'), req, res, next);
-});
-
-app.use(sendhal.fail);
-
-module.exports = app;
-```
-
-./routes/index.js
-```javascript
-// ... 
-var sendhal = require('sendhal');
-// ...
-
-router.get('/', function(req, res, next) {
-    sendhal.ok({welcome: 'api root'}, req, res);
-});
-
-router.route('/transactions')
-    .post(function (req, res, next) {
-        // TODO: validate
-        var model = new TransactionModel(req.db);
-        model.insert(doc, done);
-        function done(err, result) {
-            if (err) {
-                return sendhal.fail(err, req, res, next);
-            }
-            return sendhal.created(result, req, res);
+    app.route('/api').get(function(req, res, next) {
+        var rootRelations, hal, rel, _ref;
+        hal = sendhal.Resource({welcome: 'api entry'}, req.path);
+        _ref = config.relations;
+        for (rel in _ref) {
+            rootRelations = _ref[rel];
+            hal.link(rel, rootRelations);
         }
-    })
+        return sendhal.ok(hal, req, res);
+    });
+    
+    app.use('/api', function(req, res, next) {
+        var err, method;
+        method = req.method.toLowerCase();
+        if (method === 'get') {
+            err = new Error('Not Found');
+            res.status(404);
+            return sendhal.fail(err, req, res, next);
+        }
+        res.status(405);
+        return sendhal.fail(new Error('Method Not Allowed'), req, res, next);
+      });
+    app.use('/api', sendhal.fail);
 ```
 
 ## API
